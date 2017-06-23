@@ -12,14 +12,17 @@ function getRanNum(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-var computerNum = getRanNum(1, 3);
-var userScore = 0;
-var computerScore = 0;
 var userNum;
 
-for (var i = 0; i < 3; i++) {
-  var userChoice = prompt("Choisissez entre Pierre, Feuille ou Ciseaux").toUpperCase();
+var userScore = 0;
+var computerScore = 0;
 
+var resultArr = [];
+
+for (var i = 0; i < 3; i++) {
+  var computerNum = getRanNum(1, 3);
+  var userChoice = prompt('Choisissez entre "Pierre", "Feuille" ou "Ciseaux"').toUpperCase();
+  //CISEAUX = 1 ; FEUILLE = 2 ; PIERRE = 3
   switch (userChoice) {
     case "CISEAUX":
       userNum = 1;
@@ -31,8 +34,40 @@ for (var i = 0; i < 3; i++) {
       userNum = 3;
       break;
   }
-  userNum > computerNum ? userScore++ : userNum < computerNum ? computerScore++ : false;
+  resultArr.push([userNum, computerNum]);
 }
 
-alert(userScore > computerScore ? `Bravo, vous avez gagné avec ${userScore} points contre ${computerScore} !` : userScore == computerScore ? `ÉGALITÉ (${userScore} points chacun...)` : `Désolé, vous avez perdu avec ${userScore} points contre ${computerScore}`);
-alert(`Votre Score : ${userScore}\nScore de l'ordinateur : ${computerScore}`);
+for (var i = 0; i < resultArr.length; i++) {
+  if (resultArr[i].indexOf(1) === -1) { //SI PAS CISEAUX : 2 > 3
+    switch (resultArr[i].indexOf(2)) {
+      case 0:
+        userScore++;
+        break;
+      case 1:
+        computerScore++;
+        break;
+    }
+  } else if (resultArr[i].indexOf(2) === -1) { //SI PAS FEUILLE : 3 > 1
+    switch (resultArr[i].indexOf(3)) {
+      case 0:
+        userScore++;
+        break;
+      case 1:
+        computerScore++;
+        break;
+    }
+  } else {
+    switch (resultArr[i].indexOf(1)) { //SI PAS PIERRE : 1 > 2
+      case 0:
+        userScore++;
+        break;
+      case 1:
+        computerScore++;
+        break;
+    }
+  }
+}
+
+//RESULT
+var recapScores = `Votre Score : ${userScore}\nScore de l'ordinateur : ${computerScore}`;
+alert(userScore > computerScore ? `Bravo, vous avez gagné avec ${userScore} points contre ${computerScore} !\n${recapScores}` : userScore == computerScore ? `ÉGALITÉ (${userScore} points chacun...)\n${recapScores}` : `Désolé, vous avez perdu avec ${userScore} points contre ${computerScore}\n${recapScores}`);
